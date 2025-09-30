@@ -1,0 +1,54 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import NewsletterForm from "@components/NewsletterForm.astro";
+import { fetchArticles } from "@lib/cms";
+
+const { items: latest } = await fetchArticles({ limit: 3 });
+---
+<BaseLayout title="Flutter Specialists" description="Consulting, training and insights for Flutter teams.">
+  <section class="container py-16">
+    <div class="grid gap-10 md:grid-cols-2 items-center">
+      <div>
+        <h1 class="text-4xl md:text-5xl font-bold leading-tight">
+          Expert Flutter consulting and training.
+        </h1>
+        <p class="mt-4 text-lg text-gray-700">
+          We help teams ship high-quality Flutter apps faster. Advisory, code reviews, performance tuning, and hands-on workshops.
+        </p>
+        <div class="mt-6 flex gap-3">
+          <a href="/services" class="inline-flex items-center rounded bg-primary px-5 py-3 text-white hover:bg-secondary">
+            Our Services
+          </a>
+          <a href="/articles/" class="inline-flex items-center rounded border border-primary px-5 py-3 text-primary hover:bg-blue-50">
+            Read Articles
+          </a>
+        </div>
+      </div>
+      <div class="rounded border p-6 bg-gray-50">
+        <h2 class="text-xl font-semibold mb-2">Join the newsletter</h2>
+        <p class="text-sm text-gray-600 mb-4">Occasional articles on Flutter architecture, testing, performance, and developer productivity.</p>
+        <NewsletterForm />
+      </div>
+    </div>
+  </section>
+
+  <section class="container pb-16">
+    <h2 class="text-2xl font-semibold mb-6">Latest articles</h2>
+    <div class="grid gap-6 md:grid-cols-3">
+      {latest.map((p) => (
+        <article class="rounded border p-4">
+          {p.heroImageUrl && <img src={p.heroImageUrl} alt="" class="mb-3 rounded" loading="lazy" />}
+          <h3 class="font-semibold text-lg">
+            <a href={`/articles/${p.slug}/`} class="hover:underline">{p.title}</a>
+          </h3>
+          <p class="mt-2 text-sm text-gray-600 line-clamp-3">{p.description}</p>
+          <div class="mt-3 text-xs text-gray-500">{new Date(p.date).toLocaleDateString()}</div>
+          <a href={`/articles/${p.slug}/`} class="mt-3 inline-block text-sm text-primary hover:underline">Read more →</a>
+        </article>
+      ))}
+    </div>
+    <div class="mt-8">
+      <a href="/articles/" class="text-primary hover:underline">Browse all articles →</a>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,32 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+---
+<BaseLayout title="Contact — Flutter Specialists" description="Get in touch to discuss consulting or training.">
+  <section class="container py-16">
+    <h1 class="text-3xl font-bold">Contact</h1>
+    <p class="mt-3 text-gray-700 max-w-2xl">
+      Email us with a brief description of your team, codebase, and current challenges. We typically respond within 2 business days.
+    </p>
+
+    <div class="mt-8 grid gap-6 md:grid-cols-2">
+      <div class="rounded border p-6">
+        <h2 class="font-semibold">Project inquiries</h2>
+        <p class="mt-2 text-sm text-gray-600">
+          For consulting, training, or architecture reviews, include your target timelines and any constraints.
+        </p>
+        <p class="mt-3">
+          <a class="text-primary hover:underline" href="mailto:hello@flutterspecialists.eu">hello@flutterspecialists.eu</a>
+        </p>
+      </div>
+
+      <div class="rounded border p-6">
+        <h2 class="font-semibold">Follow our work</h2>
+        <ul class="mt-2 text-sm text-gray-600 space-y-1">
+          <li><a class="text-primary hover:underline" href="/articles/">Articles</a></li>
+          <li><a class="text-primary hover:underline" href="/newsletter">Newsletter</a></li>
+          <li><a class="text-primary hover:underline" href="/rss.xml">RSS feed</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

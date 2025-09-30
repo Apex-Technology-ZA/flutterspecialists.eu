@@ -1,0 +1,16 @@
+---
+const domain = "flutterspecialists.eu";
+---
+<script is:raw>
+(function() {
+  try {
+    var dnt = (navigator.doNotTrack === "1" || window.doNotTrack === "1");
+    if (dnt) return;
+    var s = document.createElement("script");
+    s.defer = true;
+    s.setAttribute("data-domain", "<?domain?>".replace("<?domain?>", "flutterspecialists.eu"));
+    s.src = "https://plausible.io/js/plausible.js";
+    document.head.appendChild(s);
+  } catch (e) {}
+})();
+</script>

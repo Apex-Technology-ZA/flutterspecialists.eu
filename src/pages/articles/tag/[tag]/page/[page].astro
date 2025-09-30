@@ -1,0 +1,77 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { fetchArticles, fetchAllTags } from "@lib/cms";
+
+const PAGE_SIZE = 9;
+
+export async function getStaticPaths() {
+  // Build paths for each tag and its pages
+  const tags = await fetchAllTags();
+  // We need total per tag to compute pages; fetch first page per tag to get total.
+  const paths: { params: { tag: string; page: string } }[] = [];
+  for (const t of tags) {
+    const { total } = await fetchArticles({ tag: t, limit: 1, skip: 0 });
+    const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+    for (let p = 1; p <= totalPages; p++) {
+      paths.push({ params: { tag: encodeURIComponent(t), page: String(p) } });
+    }
+  }
+  return paths;
+}
+
+const rawTag = Astro.params.tag ?? "";
+const decodedTag = decodeURIComponent(rawTag);
+const pageParam = Number(Astro.params.page || 1);
+const page = Number.isFinite(pageParam) && pageParam > 0 ? pageParam : 1;
+const skip = (page - 1) * PAGE_SIZE;
+
+const [{ items, total }, allTags] = await Promise.all([
+  fetchArticles({ tag: decodedTag, limit: PAGE_SIZE, skip }),
+  fetchAllTags(),
+]);
+
+const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+---
+<BaseLayout title={`Tag: ${decodedTag} — Page ${page} — Flutter Specialists`} description={`Articles tagged '${decodedTag}'`}>
+  <section class="container py-10">
+    <h1 class="text-3xl font-bold mb-6">Tag: {decodedTag}</h1>
+
+    <div class="mb-6 flex flex-wrap gap-2">
+      <a href="/articles/" class="rounded border px-3 py-1 text-sm hover:bg-blue-50">All</a>
+      {allTags.map((t) => (
+        <a href={`/articles/tag/${encodeURIComponent(t)}/page/1/`} class={`rounded border px-3 py-1 text-sm hover:bg-blue-50 ${t === decodedTag ? 'bg-blue-100 border-blue-300' : ''}`}>{t}</a>
+      ))}
+    </div>
+
+    {items.length === 0 ? (
+      <p class="text-gray-600">No articles for this tag yet.</p>
+    ) : (
+      <div class="grid gap-6 md:grid-cols-3">
+        {items.map((p) => (
+          <article class="rounded border p-4">
+            {p.heroImageUrl && <img src={p.heroImageUrl} alt="" class="mb-3 rounded" loading="lazy" />}
+            <h2 class="font-semibold text-lg">
+              <a href={`/articles/${p.slug}/`} class="hover:underline">{p.title}</a>
+            </h2>
+            <p class="mt-2 text-sm text-gray-600 line-clamp-3">{p.description}</p>
+            <div class="mt-3 text-xs text-gray-500">{new Date(p.date).toLocaleDateString()}</div>
+            <div class="mt-2 flex flex-wrap gap-1">
+              {(p.tags || []).map((t) => (
+                <a href={`/articles/tag/${encodeURIComponent(t)}/page/1/`} class="text-xs rounded bg-gray-100 px-2 py-0.5 hover:bg-gray-200">{t}</a>
+              ))}
+            </div>
+            <a href={`/articles/${p.slug}/`} class="mt-3 inline-block text-sm text-primary hover:underline">Read more →</a>
+          </article>
+        ))}
+      </div>
+    )}
+
+    {totalPages > 1 && (
+      <div class="mt-8 flex items-center gap-2">
+        {page > 1 && <a href={`/articles/tag/${encodeURIComponent(decodedTag)}/page/${page - 1}/`} class="rounded border px-3 py-1 text-sm hover:bg-blue-50">← Prev</a>}
+        <span class="text-sm text-gray-600">Page {page} of {totalPages}</span>
+        {page < totalPages && <a href={`/articles/tag/${encodeURIComponent(decodedTag)}/page/${page + 1}/`} class="rounded border px-3 py-1 text-sm hover:bg-blue-50">Next →</a>}
+      </div>
+    )}
+  </section>
+</BaseLayout>

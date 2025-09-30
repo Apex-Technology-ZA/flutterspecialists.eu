@@ -1,0 +1,18 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import NewsletterForm from "@components/NewsletterForm.astro";
+---
+<BaseLayout title="Newsletter — Flutter Specialists" description="Subscribe to Flutter Specialists newsletter for articles on architecture, testing and performance.">
+  <section class="container py-16">
+    <h1 class="text-3xl font-bold">Newsletter</h1>
+    <p class="mt-3 text-gray-700 max-w-2xl">
+      Get occasional articles about Flutter architecture, testing, performance, and developer productivity. No spam. Unsubscribe anytime.
+    </p>
+    <div class="mt-6 rounded border bg-gray-50 p-6 max-w-lg">
+      <NewsletterForm />
+    </div>
+    <p class="mt-3 text-xs text-gray-500">
+      By subscribing, you agree to receive emails from us. We will never share your email with third parties.
+    </p>
+  </section>
+</BaseLayout>

@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Temporary brand palette */
+  --brand-primary: #2563eb;
+  --brand-secondary: #0ea5e9;
+  --brand-accent: #22d3ee;
+}
+
+html, body {
+  @apply bg-white text-gray-800;
+}
+
+a {
+  @apply text-primary hover:underline;
+}
+
+.prose a {
+  @apply text-primary no-underline hover:underline;
+}
+
+.prose img {
+  @apply rounded;
+}
+
+.container {
+  @apply mx-auto max-w-6xl px-4;
+}

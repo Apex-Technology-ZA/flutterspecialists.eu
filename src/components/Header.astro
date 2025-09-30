@@ -1,0 +1,19 @@
+---
+const nav = [
+  { href: '/', label: 'Home' },
+  { href: '/articles/', label: 'Articles' },
+  { href: '/services', label: 'Services' },
+  { href: '/training', label: 'Training' },
+  { href: '/newsletter', label: 'Newsletter' },
+  { href: '/about', label: 'About' },
+  { href: '/contact', label: 'Contact' }
+];
+---
+<header class="border-b">
+  <div class="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
+    <a href="/" class="font-bold text-xl">Flutter Specialists</a>
+    <nav class="flex flex-wrap gap-4 text-sm">
+      {nav.map((item) => <a href={item.href} class="hover:text-secondary">{item.label}</a>)}
+    </nav>
+  </div>
+</header>

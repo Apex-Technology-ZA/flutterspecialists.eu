@@ -1,0 +1,26 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+---
+<BaseLayout title="Privacy — Flutter Specialists" description="How we handle your data and privacy.">
+  <section class="container py-16 prose prose-slate max-w-none">
+    <h1>Privacy Policy</h1>
+    <p>We value your privacy.</p>
+
+    <h2>Newsletter</h2>
+    <p>
+      If you subscribe to our newsletter, your email address is processed by our email service provider (e.g. Mailchimp) for the purpose
+      of sending you updates. You can unsubscribe at any time via the link in each email.
+    </p>
+
+    <h2>Analytics</h2>
+    <p>
+      We use <a href="https://plausible.io/">Plausible Analytics</a> to gather simple, privacy-friendly usage statistics. We do not track
+      individual users or collect personal data. If your browser's Do Not Track setting is enabled, analytics is disabled.
+    </p>
+
+    <h2>Contact</h2>
+    <p>If you have any questions regarding this policy, email <a href="mailto:privacy@flutterspecialists.eu">privacy@flutterspecialists.eu</a>.</p>
+
+    <p class="text-sm text-gray-500">Last updated: {new Date().toLocaleDateString()}</p>
+  </section>
+</BaseLayout>

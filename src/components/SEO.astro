@@ -1,0 +1,33 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  image?: string;
+  noindex?: boolean;
+}
+const {
+  title = "Flutter Specialists",
+  description = "Expert Flutter consulting, training, and insights.",
+  canonical,
+  image = "/og-default.svg",
+  noindex = false
+} = Astro.props as Props;
+---
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  {canonical && <link rel="canonical" href={canonical} />}
+  {noindex && <meta name="robots" content="noindex" />}
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={image} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={image} />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+</head>
