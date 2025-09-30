@@ -2,6 +2,11 @@
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 
+export async function getStaticPaths() {
+  const entries = await getCollection("articles");
+  return entries.map((p) => ({ params: { slug: p.slug } }));
+}
+
 const { slug } = Astro.params;
 const entries = await getCollection("articles");
 const entry = entries.find((p) => p.slug === slug);

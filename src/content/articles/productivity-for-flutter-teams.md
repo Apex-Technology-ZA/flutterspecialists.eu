@@ -5,7 +5,7 @@ date: 2025-02-05
 tags: ["productivity", "process", "flutter"]
 heroImage: "/og-default.svg"
 draft: false
-canonical: ""
+
 ---
 
 High-performing teams optimize for fast feedback and low coordination costs.

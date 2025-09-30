@@ -5,7 +5,7 @@ date: 2025-01-10
 tags: ["architecture", "flutter"]
 heroImage: "/og-default.svg"
 draft: false
-canonical: ""
+
 ---
 
 When structuring a Flutter application, focus on boundaries and clarity:

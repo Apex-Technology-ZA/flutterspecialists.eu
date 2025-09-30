@@ -5,7 +5,7 @@ date: 2025-01-20
 tags: ["testing", "quality", "flutter"]
 heroImage: "/og-default.svg"
 draft: false
-canonical: ""
+
 ---
 
 A balanced testing strategy lets teams move quickly without fear of regressions.
