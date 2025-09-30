@@ -1,55 +1,69 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
-import { fetchArticles, fetchArticleBySlug, renderRichText } from "@lib/cms";
-
-export async function getStaticPaths() {
-  const { items } = await fetchArticles({ limit: 1000 });
-  return items.map((a) => ({ params: { slug: a.slug } }));
-}
+import { getCollection } from "astro:content";
 
 const { slug } = Astro.params;
-const entry = slug ? await fetchArticleBySlug(slug) : null;
+const entries = await getCollection("articles");
+const entry = entries.find((p) => p.slug === slug);
 
 if (!entry) {
   Astro.response.status = 404;
 }
-const html = entry ? renderRichText(entry.body) : "";
+
+const rendered = entry ? await entry.render() : null;
+const Content = rendered ? rendered.Content : null;
+const headings = rendered ? rendered.headings : [];
 ---
 <BaseLayout
-  title={entry ? `${entry.title} — Flutter Specialists` : "Article not found — Flutter Specialists"}
-  description={entry?.description}
+  title={entry ? `${entry.data.title} — Flutter Specialists` : "Article not found — Flutter Specialists"}
+  description={entry?.data.description}
   canonical={entry ? `https://flutterspecialists.eu/articles/${entry.slug}/` : undefined}
-  image={entry?.heroImageUrl ?? "/og-default.svg"}
+  image={entry?.data.heroImage ?? "/og-default.svg"}
   noindex={!entry}
 >
   {entry ? (
     <section class="container py-10">
       <nav class="mb-4 text-sm text-gray-500">
-        <a href="/articles/" class="hover:underline">Articles</a> / {entry.title}
+        <a href="/articles/" class="hover:underline">Articles</a> / {entry.data.title}
       </nav>
-      <h1 class="text-3xl font-bold">{entry.title}</h1>
-      <div class="mt-2 text-xs text-gray-500">{new Date(entry.date).toLocaleDateString()}</div>
+      <h1 class="text-3xl font-bold">{entry.data.title}</h1>
+      <div class="mt-2 text-xs text-gray-500">{new Date(entry.data.date).toLocaleDateString()}</div>
 
-      {entry.tags && entry.tags.length > 0 && (
+      {Array.isArray(entry.data.tags) && entry.data.tags.length > 0 && (
         <div class="mt-3 flex flex-wrap gap-1">
-          {entry.tags.map((t) => (
-            <a href={`/articles/tag/${encodeURIComponent(t)}/page/1/`} class="text-xs rounded bg-gray-100 px-2 py-0.5 hover:bg-gray-200">{t}</a>
+          {entry.data.tags.map((t) => (
+            <a href={`/articles/?tag=${encodeURIComponent(t)}`} class="text-xs rounded bg-gray-100 px-2 py-0.5 hover:bg-gray-200">{t}</a>
           ))}
         </div>
       )}
 
-      {entry.heroImageUrl && (
-        <img src={entry.heroImageUrl} alt="" class="mt-6 rounded" loading="lazy" />
+      {entry.data.heroImage && (
+        <img src={entry.data.heroImage} alt="" class="mt-6 rounded" loading="lazy" />
       )}
 
-      <article class="prose prose-slate max-w-none mt-8">
-        <div set:html={html} />
+      {headings && headings.length > 2 && (
+        <aside class="mt-6 mb-6 rounded border bg-gray-50 p-4">
+          <h2 class="text-sm font-semibold mb-2">On this page</h2>
+          <ul class="text-sm space-y-1">
+            {headings
+              .filter((h) => h.depth <= 3)
+              .map((h) => (
+                <li style={`margin-left:${(h.depth - 2) * 12}px`}>
+                  <a href={`#${h.slug}`} class="hover:underline">{h.text}</a>
+                </li>
+              ))}
+          </ul>
+        </aside>
+      )}
+
+      <article class="prose prose-slate max-w-none">
+        {Content && <Content />}
       </article>
 
-      {entry.canonical && (
+      {entry.data.canonical && (
         <p class="mt-8 text-xs text-gray-500">
           Originally published at{" "}
-          <a href={entry.canonical} class="underline">{entry.canonical}</a>
+          <a href={entry.data.canonical} class="underline">{entry.data.canonical}</a>
         </p>
       )}
     </section>

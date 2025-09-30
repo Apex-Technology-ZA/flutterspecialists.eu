@@ -1,9 +1,12 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
 import NewsletterForm from "@components/NewsletterForm.astro";
-import { fetchArticles } from "@lib/cms";
+import { getCollection } from "astro:content";
 
-const { items: latest } = await fetchArticles({ limit: 3 });
+const latest = (await getCollection("articles"))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
 ---
 <BaseLayout title="Flutter Specialists" description="Consulting, training and insights for Flutter teams.">
   <section class="container py-16">
@@ -37,12 +40,12 @@ const { items: latest } = await fetchArticles({ limit: 3 });
     <div class="grid gap-6 md:grid-cols-3">
       {latest.map((p) => (
         <article class="rounded border p-4">
-          {p.heroImageUrl && <img src={p.heroImageUrl} alt="" class="mb-3 rounded" loading="lazy" />}
+          {p.data.heroImage && <img src={p.data.heroImage} alt="" class="mb-3 rounded" loading="lazy" />}
           <h3 class="font-semibold text-lg">
-            <a href={`/articles/${p.slug}/`} class="hover:underline">{p.title}</a>
+            <a href={`/articles/${p.slug}/`} class="hover:underline">{p.data.title}</a>
           </h3>
-          <p class="mt-2 text-sm text-gray-600 line-clamp-3">{p.description}</p>
-          <div class="mt-3 text-xs text-gray-500">{new Date(p.date).toLocaleDateString()}</div>
+          <p class="mt-2 text-sm text-gray-600 line-clamp-3">{p.data.description}</p>
+          <div class="mt-3 text-xs text-gray-500">{new Date(p.data.date).toLocaleDateString()}</div>
           <a href={`/articles/${p.slug}/`} class="mt-3 inline-block text-sm text-primary hover:underline">Read more →</a>
         </article>
       ))}

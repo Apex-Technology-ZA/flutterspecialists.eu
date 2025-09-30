@@ -1,37 +1,51 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
-import { fetchArticles, fetchAllTags } from "@lib/cms";
+import { getCollection } from "astro:content";
 
+const all = (await getCollection("articles"))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const url = new URL(Astro.request.url);
+const tag = url.searchParams.get("tag") || "";
+const page = Math.max(1, Number(url.searchParams.get("page") || 1));
 const perPage = 9;
-const [{ items, total }, allTags] = await Promise.all([
-  fetchArticles({ limit: perPage, skip: 0 }),
-  fetchAllTags()
-]);
-const totalPages = Math.max(1, Math.ceil(total / perPage));
+
+const filtered = tag ? all.filter((p) => (p.data.tags || []).includes(tag)) : all;
+const totalPages = Math.max(1, Math.ceil(filtered.length / perPage));
+const start = (page - 1) * perPage;
+const items = filtered.slice(start, start + perPage);
+
+const allTags = Array.from(
+  filtered.reduce((acc, p) => {
+    for (const t of (p.data.tags || [])) acc.add(t);
+    return acc;
+  }, new Set<string>())
+).sort();
 ---
 <BaseLayout title="Articles — Flutter Specialists" description="Insights on Flutter architecture, testing, performance, tooling and developer productivity.">
   <section class="container py-10">
     <h1 class="text-3xl font-bold mb-6">Articles</h1>
 
     <div class="mb-6 flex flex-wrap gap-2">
-      <a href="/articles/" class="rounded border px-3 py-1 text-sm bg-blue-100 border-blue-300">All</a>
+      <a href="/articles/" class={`rounded border px-3 py-1 text-sm hover:bg-blue-50 ${tag === '' ? 'bg-blue-100 border-blue-300' : ''}`}>All</a>
       {allTags.map((t) => (
-        <a href={`/articles/tag/${encodeURIComponent(t)}/page/1/`} class="rounded border px-3 py-1 text-sm hover:bg-blue-50">{t}</a>
+        <a href={`/articles/?tag=${encodeURIComponent(t)}`} class={`rounded border px-3 py-1 text-sm hover:bg-blue-50 ${tag === t ? 'bg-blue-100 border-blue-300' : ''}`}>{t}</a>
       ))}
     </div>
 
     <div class="grid gap-6 md:grid-cols-3">
       {items.map((p) => (
         <article class="rounded border p-4">
-          {p.heroImageUrl && <img src={p.heroImageUrl} alt="" class="mb-3 rounded" loading="lazy" />}
+          {p.data.heroImage && <img src={p.data.heroImage} alt="" class="mb-3 rounded" loading="lazy" />}
           <h2 class="font-semibold text-lg">
-            <a href={`/articles/${p.slug}/`} class="hover:underline">{p.title}</a>
+            <a href={`/articles/${p.slug}/`} class="hover:underline">{p.data.title}</a>
           </h2>
-          <p class="mt-2 text-sm text-gray-600 line-clamp-3">{p.description}</p>
-          <div class="mt-3 text-xs text-gray-500">{new Date(p.date).toLocaleDateString()}</div>
+          <p class="mt-2 text-sm text-gray-600 line-clamp-3">{p.data.description}</p>
+          <div class="mt-3 text-xs text-gray-500">{new Date(p.data.date).toLocaleDateString()}</div>
           <div class="mt-2 flex flex-wrap gap-1">
-            {(p.tags || []).map((t) => (
-              <a href={`/articles/tag/${encodeURIComponent(t)}/page/1/`} class="text-xs rounded bg-gray-100 px-2 py-0.5 hover:bg-gray-200">{t}</a>
+            {(p.data.tags || []).map((t) => (
+              <a href={`/articles/?tag=${encodeURIComponent(t)}`} class="text-xs rounded bg-gray-100 px-2 py-0.5 hover:bg-gray-200">{t}</a>
             ))}
           </div>
           <a href={`/articles/${p.slug}/`} class="mt-3 inline-block text-sm text-primary hover:underline">Read more →</a>
@@ -41,8 +55,23 @@ const totalPages = Math.max(1, Math.ceil(total / perPage));
 
     {totalPages > 1 && (
       <div class="mt-8 flex items-center gap-2">
-        <span class="text-sm text-gray-600">Page 1 of {totalPages}</span>
-        <a href={`/articles/page/2/`} class="rounded border px-3 py-1 text-sm hover:bg-blue-50">Next →</a>
+        {page > 1 && (
+          <a
+            href={`/articles/?${new URLSearchParams({ ...(tag ? { tag } : {}), page: String(page - 1) }).toString()}`}
+            class="rounded border px-3 py-1 text-sm hover:bg-blue-50"
+          >
+            ← Prev
+          </a>
+        )}
+        <span class="text-sm text-gray-600">Page {page} of {totalPages}</span>
+        {page < totalPages && (
+          <a
+            href={`/articles/?${new URLSearchParams({ ...(tag ? { tag } : {}), page: String(page + 1) }).toString()}`}
+            class="rounded border px-3 py-1 text-sm hover:bg-blue-50"
+          >
+            Next →
+          </a>
+        )}
       </div>
     )}
   </section>
