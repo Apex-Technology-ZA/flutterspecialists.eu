@@ -1,5 +1,5 @@
 ---
-title: Offline‑First Flutter Architecture and Sync: Design, Conflicts, and Guarantees
+title: "Offline‑First Flutter Architecture and Sync: Design, Conflicts, and Guarantees"
 description: A deep guide to designing offline‑first Flutter apps with robust sync, conflict resolution, and testable guarantees.
 date: 2025-03-14
 tags: ["architecture", "offline", "sync", "flutter", "data", "consistency"]
@@ -8,6 +8,7 @@ draft: false
 ---
 
 Why offline‑first?
+
 - Modern users expect apps to work on flaky networks, in airplane mode, and in low‑signal areas.
 - Offline‑first isn’t just caching; it’s a deliberate data model, write semantics, and conflict strategy.
 - Getting it right reduces support load, increases retention, and simplifies UX: users never see “can’t save”.
@@ -15,6 +16,7 @@ Why offline‑first?
 This guide provides a comprehensive blueprint for offline‑first Flutter apps, with patterns for storage, sync, conflicts, background jobs, and testing.
 
 Contents
+
 - Principles and guarantees
 - Data model and identifiers
 - Local storage and change log
@@ -28,6 +30,7 @@ Contents
 - Reference implementation outline
 
 Principles and guarantees
+
 - Availability first: operations succeed locally, even when offline.
 - Convergence: replicas eventually reach a consistent state under no further updates.
 - Idempotence: re‑applying the same operation yields the same state; critical for retries.
@@ -35,16 +38,19 @@ Principles and guarantees
 - Bounded staleness: define acceptable windows for how stale UI can be.
 
 Guarantee matrix (what you can promise)
+
 - Local durability: once the user sees “Saved”, the mutation exists in the local log (fsync’ed).
 - Eventual server persistence: queued writes are retried with exponential backoff until success or manual intervention.
 - Deterministic conflict policy: given concurrent edits, the outcome is predictable, documented, and test‑covered.
 
 Data model and identifiers
+
 - Use client‑generated, globally unique IDs (UUID v4 or KSUID) for new entities.
 - Prefer immutable event stream (append‑only change log) over in‑place mutation for local writes; apply reducers to compute current state.
 - Store server ETags/versions per entity to support optimistic concurrency.
 
 Entity shape (example)
+
 ```json
 {
   "id": "ksuid_29JYBqz9G3S6po1hy...",
@@ -62,6 +68,7 @@ Entity shape (example)
 ```
 
 Local storage and change log
+
 - Chosen stores:
   - drift (SQLite) for relational/stateful queries and constraints
   - isar/hive for pure KV or document workloads
@@ -72,13 +79,14 @@ Local storage and change log
 - Keep indexes on entity id, updatedAt, and dirty flags for efficient queries.
 
 Write semantics: queueing, retries, backoff
+
 - Local flow:
-  1) Validate input in domain layer.
-  2) Begin transaction:
+  1. Validate input in domain layer.
+  2. Begin transaction:
      - Append change to `changes`
      - Apply change to `entities` materialized view
-  3) Mark entity `local.pending=true` and capture `dirtyFields`.
-  4) Enqueue a background job to push.
+  3. Mark entity `local.pending=true` and capture `dirtyFields`.
+  4. Enqueue a background job to push.
 - Retries:
   - Exponential backoff with jitter (e.g., 1s, 2s, 4s, 8s, cap at 5m) on transient errors.
   - Immediate retry on network regain.
@@ -86,6 +94,7 @@ Write semantics: queueing, retries, backoff
   - Include clientChangeId in payload; server stores last applied id per entity to de‑duplicate.
 
 Sync strategies
+
 - Pull (read):
   - Incremental with server cursor (updatedSince watermark or opaque cursor).
   - On first run: full sync per collection, then incremental.
@@ -96,6 +105,7 @@ Sync strategies
   - On 409 Conflict / 412 Precondition Failed, trigger conflict resolution.
 
 Conflict resolution patterns
+
 - Last‑Writer‑Wins (LWW): compare server `updatedAt` vs. client `updatedAt`.
   - Pros: simple, deterministic; Cons: may clobber legitimate changes.
 - Field‑level merge: merge only independent fields; conflicting fields use LWW or custom policies.
@@ -105,6 +115,7 @@ Conflict resolution patterns
   - Start with field‑level merge for independent fields, LWW fallback for conflicts, and manual surface for critical entities.
 
 Example: optimistic concurrency with ETag
+
 - Client sends `If-Match: W/"etag-server-v15"`.
 - On mismatch (412), fetch server version, compute three‑way diff:
   - Base: last known server version
@@ -116,6 +127,7 @@ Example: optimistic concurrency with ETag
   - Else create a “conflict item” for manual resolution.
 
 Background syncing and lifecycle
+
 - Architecture:
   - Foreground sync manager (Dart) for active app.
   - Background fetch (platform): Android WorkManager; iOS BGAppRefreshTask/BGProcessingTask with limits.
@@ -129,6 +141,7 @@ Background syncing and lifecycle
   - Rate‑limit to avoid server overload; server should also enforce quotas.
 
 UX patterns for trust and clarity
+
 - Optimistic UI: reflect local changes immediately with subtle “Syncing…” status.
 - Sync banners/toasts: “You’re offline. Changes will sync when connection resumes.”
 - Conflict chips: indicate conflicts on list rows; tap → resolution screen.
@@ -136,6 +149,7 @@ UX patterns for trust and clarity
 - Visual status on settings: last sync time, queued ops count, error list (with resend).
 
 Observability, metrics, and alerting
+
 - Client metrics:
   - Queue length over time
   - Sync cycle duration and success rate
@@ -149,6 +163,7 @@ Observability, metrics, and alerting
   - Retry > N attempts → circuit‑break or escalate UI
 
 Testing and failure injection
+
 - Unit tests:
   - Reducers (applyChange), merge policy, clock‑controlled timestamping.
 - Integration tests (widget + persistence):
@@ -160,6 +175,7 @@ Testing and failure injection
   - Generate random interleavings of changes/pulls to verify convergence and invariants.
 
 Reference implementation outline (pseudo)
+
 ```dart
 // Domain change model
 sealed class Change {
@@ -207,6 +223,7 @@ class SyncManager {
 ```
 
 When not to go offline‑first
+
 - Real‑time transactional integrity (e.g., stock trades) with strong consistency might not fit offline semantics.
 - If product does not require offline and infra budget is minimal, choose simpler caching.
 

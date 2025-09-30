@@ -1,23 +1,27 @@
 ---
-title: Robust Networking in Flutter: Errors, Retries, Cancellation, and Backpressure
+title: "Robust Networking in Flutter: Errors, Retries, Cancellation, and Backpressure"
 description: A deep guide to building resilient, observable, and user-friendly networking layers in Flutter, covering error taxonomies, retry strategies, timeouts, cancellation, deduplication, and backpressure.
 date: 2025-03-22
-tags: ["networking", "resilience", "retries", "timeouts", "flutter", "architecture"]
+tags:
+  ["networking", "resilience", "retries", "timeouts", "flutter", "architecture"]
 heroImage: "/og-default.svg"
 draft: false
 ---
 
 Why this matters
+
 - Mobile networks are hostile: variable latency, captive portals, TLS interceptors, and background restrictions.
 - A high-quality app treats the network as unreliable and designs a resilient **data layer** that fails gracefully, retries intelligently, and remains observable in production.
 
 Objectives
+
 - Predictable error classification with app-friendly messages
 - Sensible defaults for timeouts, retries, and cancellation
 - Request deduplication and backpressure to prevent stampedes
 - Clear observability: traces, metrics, structured logs for diagnosis
 
 Contents
+
 - Error taxonomy and surfacing to UI
 - Timeouts: connect vs. read vs. whole call budgets
 - Retry strategy, jitter, and idempotence
@@ -42,11 +46,13 @@ Categorize errors first; everything else follows.
   - Domain-level constraints, quota exceeded, locked resource
 
 UI surfacing
+
 - Client/Transient: “Temporary network issue. Retrying…”
 - Permanent Client: show actionable validation/auth error
 - Business: error banner with context; consider soft retry/recovery guidance
 
 Timeouts and budgets
+
 - Separate budgets:
   - Connect timeout: 2–5s
   - Read timeout: 10–30s (per chunk/response)
@@ -56,6 +62,7 @@ Timeouts and budgets
 - Alert on timeouts per endpoint to catch regressions
 
 Retry strategy and jitter
+
 - Retry only **idempotent** methods by default (GET, HEAD). For POST/PUT/PATCH/DELETE, require explicit allowance and include idempotency keys.
 - Exponential backoff with full jitter:
   - Base = 250ms, factor 2, jitter [0, base) for first few attempts
@@ -66,6 +73,7 @@ Retry strategy and jitter
   - Track rolling error rate per host/route; short-circuit with immediate fallback when above threshold
 
 Cancellation and lifecycles
+
 - Tie requests to UI lifecycles:
   - Cancel when widget is disposed, route is popped, or search query changes
 - Prevent “late write” of stale responses:
@@ -73,16 +81,19 @@ Cancellation and lifecycles
 - Use autoDispose scopes (Riverpod) or cancellable tokens (BLoC/controller)
 
 Request coalescing and deduplication
+
 - Coalesce identical in-flight GETs (same method+URL+headers+body hash) and fan-out results to all subscribers.
 - Useful for “search-as-you-type” (coalesce per debounced query) and details pages accessed from multiple entry points.
 
 Backpressure and concurrency limits
+
 - Limit concurrent in-flight requests per host and globally (e.g., 6 per host, 24 global).
 - Queue requests beyond the limit; prioritize critical ones (foreground UI > background prefetch).
 - Combine with debounce for chattier flows (e.g., filters, search).
 - Avoid stampedes by caching negative results briefly and coalescing.
 
 Caching and staleness
+
 - Respect HTTP caching headers (ETag, Cache-Control, Last-Modified)
 - Serve stale-while-revalidate (SWR) in UI:
   - Show cached data immediately
@@ -90,6 +101,7 @@ Caching and staleness
 - Define staleness budgets per domain (e.g., 30s for news list, 24h for static catalog)
 
 Observability
+
 - Tracing:
   - Trace ID per request (correlate logs across layers)
   - Span for DNS, TLS handshake, connect, request write, response read
@@ -102,6 +114,7 @@ Observability
   - Redact secrets; sample at rate for success to avoid volume
 
 Testing strategy
+
 - Unit tests:
   - Retry/backoff schedule correctness with fixed seeded RNG
   - Idempotent vs. non-idempotent behaviors
@@ -114,6 +127,7 @@ Testing strategy
 Reference design (pseudo-code)
 
 Client Facade
+
 ```dart
 class HttpClientFacade {
   final HttpClient raw;
@@ -153,6 +167,7 @@ class HttpClientFacade {
 ```
 
 Retry policy
+
 ```dart
 class RetryPolicy {
   final int maxAttempts;
@@ -177,6 +192,7 @@ class RetryPolicy {
 ```
 
 Dedup and limiter (sketch)
+
 ```dart
 class Deduper {
   final _inflight = <String, Future>{}; // key -> future
@@ -211,11 +227,13 @@ class Limiter {
 ```
 
 UX patterns
+
 - “Retry” affordances for transient failures; “Report” for unexpected permanent errors
 - Inline skeletons for SWR; subtle refresh indicators on updated content
 - Respect user actions: avoid spinners that block the whole screen for background-able pulls
 
 Adoption checklist
+
 - [ ] Define error taxonomy and map to UI surfaces
 - [ ] Establish deadlines and default timeouts
 - [ ] Implement retry with backoff+jitter and idempotency keys
