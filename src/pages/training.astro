@@ -1,5 +1,9 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const trainings = (await getCollection("trainings"))
+  .filter((t) => !t.data.draft);
 ---
 <BaseLayout title="Training — Flutter Specialists" description="Hands-on Flutter workshops and training tailored to your team.">
   <section class="container py-16">
@@ -9,34 +13,28 @@ import BaseLayout from "@layouts/BaseLayout.astro";
     </p>
 
     <div class="mt-8 grid gap-6 md:grid-cols-3">
-      <div class="rounded border p-6">
-        <h2 class="font-semibold text-lg">Architecture & Patterns</h2>
-        <ul class="mt-2 text-sm text-gray-600 list-disc pl-5 space-y-1">
-          <li>State management trade-offs</li>
-          <li>Modularization & layering</li>
-          <li>Dependency management</li>
-        </ul>
-      </div>
-      <div class="rounded border p-6">
-        <h2 class="font-semibold text-lg">Testing Strategy</h2>
-        <ul class="mt-2 text-sm text-gray-600 list-disc pl-5 space-y-1">
-          <li>Unit, widget, and integration tests</li>
-          <li>Golden tests and reliability</li>
-          <li>CI integration</li>
-        </ul>
-      </div>
-      <div class="rounded border p-6">
-        <h2 class="font-semibold text-lg">Performance</h2>
-        <ul class="mt-2 text-sm text-gray-600 list-disc pl-5 space-y-1">
-          <li>Rendering & jank removal</li>
-          <li>Startup time optimization</li>
-          <li>Memory & network efficiency</li>
-        </ul>
-      </div>
+      {trainings.map((t) => (
+        <article class="rounded border p-6">
+          {t.data.heroImage && <img src={t.data.heroImage} alt="" class="mb-3 rounded" loading="lazy" />}
+          <h2 class="font-semibold text-lg">
+            <a href={`/training/${t.slug}/`} class="hover:underline">{t.data.title}</a>
+          </h2>
+          <p class="mt-2 text-sm text-gray-600 line-clamp-4">{t.data.description}</p>
+          <div class="mt-3 flex gap-3 items-center">
+            {t.data.duration && <span class="text-xs text-gray-500">{t.data.duration}</span>}
+            {t.data.mode && <span class="text-xs text-gray-500">• {t.data.mode}</span>}
+          </div>
+          {t.data.calendlyLink && (
+            <a href={t.data.calendlyLink} class="mt-4 inline-block rounded bg-primary px-4 py-2 text-white hover:bg-secondary">
+              Register
+            </a>
+          )}
+        </article>
+      ))}
     </div>
 
     <div class="mt-10">
-      <a href="/contact" class="inline-flex items-center rounded bg-primary px-5 py-3 text-white hover:bg-secondary">Request a workshop</a>
+      <a href="/contact" class="inline-flex items-center rounded border border-primary px-5 py-3 text-primary hover:bg-blue-50">Request a custom workshop</a>
     </div>
   </section>
 </BaseLayout>
