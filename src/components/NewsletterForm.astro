@@ -1,5 +1,9 @@
 ---
-const action = import.meta.env.PUBLIC_MAILCHIMP_FORM_ACTION || "https://apextechnology.us4.list-manage.com/subscribe/post?u=fc79e1864cf1a1f4768a0e99b&id=5aa1ce573e&f_id=009bc2e1f0";
+const action = import.meta.env.PUBLIC_MAILCHIMP_FORM_ACTION;
+
+if (!action) {
+  console.error('PUBLIC_MAILCHIMP_FORM_ACTION environment variable is not set');
+}
 ---
 <form action={action} method="post" id="newsletter-form" class="space-y-3">
   <div>
@@ -22,6 +26,17 @@ const action = import.meta.env.PUBLIC_MAILCHIMP_FORM_ACTION || "https://apextech
 
   console.log('Newsletter form initialized');
   console.log('Form action:', form?.action);
+
+  if (!form?.action) {
+    console.error('Newsletter form: No Mailchimp action URL configured');
+    messageDiv.textContent = 'Newsletter temporarily unavailable. Please contact us directly.';
+    messageDiv.className = 'mt-2 text-sm text-amber-600';
+    messageDiv.classList.remove('hidden');
+    if (submitButton) {
+      submitButton.disabled = true;
+    }
+    return;
+  }
 
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
