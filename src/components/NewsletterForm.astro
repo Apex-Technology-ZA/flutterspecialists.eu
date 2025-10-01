@@ -1,5 +1,5 @@
 ---
-const action = "https://apextechnology.us4.list-manage.com/subscribe/post?u=fc79e1864cf1a1f4768a0e99b&id=5aa1ce573e&f_id=009bc2e1f0";
+const action = import.meta.env.PUBLIC_MAILCHIMP_FORM_ACTION || "https://apextechnology.us4.list-manage.com/subscribe/post?u=fc79e1864cf1a1f4768a0e99b&id=5aa1ce573e&f_id=009bc2e1f0";
 ---
 <form action={action} method="post" id="newsletter-form" class="space-y-3">
   <div>
