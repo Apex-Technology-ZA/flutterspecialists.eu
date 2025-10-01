@@ -1,19 +1,42 @@
 ---
-const nav = [
-  { href: '/', label: 'Home' },
-  { href: '/articles/', label: 'Articles' },
-  { href: '/services', label: 'Services' },
-  { href: '/training', label: 'Training' },
-  { href: '/newsletter', label: 'Newsletter' },
-  { href: '/about', label: 'About' },
-  { href: '/contact', label: 'Contact' }
-];
 ---
-<header class="border-b">
-  <div class="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
-    <a href="/" class="font-bold text-xl">Flutter Specialists</a>
-    <nav class="flex flex-wrap gap-4 text-sm">
-      {nav.map((item) => <a href={item.href} class="hover:text-secondary">{item.label}</a>)}
-    </nav>
+
+<header class="border-b bg-white">
+  <div class="mx-auto max-w-6xl px-4 py-4">
+    <div class="flex items-center justify-between">
+      <a href="/" class="font-bold text-xl text-gray-900 hover:text-blue-600 transition-colors">
+        Flutter Specialists
+      </a>
+      <nav class="hidden md:flex items-center gap-6 text-sm">
+        <a href="/articles/" class="text-gray-600 hover:text-blue-600 transition-colors">Articles</a>
+        <a href="/services" class="text-gray-600 hover:text-blue-600 transition-colors">Services</a>
+        <a href="/newsletter" class="text-gray-600 hover:text-blue-600 transition-colors">Newsletter</a>
+        <a href="/about" class="text-gray-600 hover:text-blue-600 transition-colors">About</a>
+        <a href="/contact" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">
+          Contact
+        </a>
+      </nav>
+      <!-- Mobile menu button -->
+      <div class="md:hidden">
+        <button class="p-2" onclick="document.querySelector('.mobile-menu').classList.toggle('hidden')">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+        <div class="mobile-menu hidden absolute top-full left-0 right-0 bg-white border-b shadow-lg z-50">
+          <nav class="px-4 py-4 space-y-3">
+            <a href="/articles/" class="block text-gray-600 hover:text-blue-600">Articles</a>
+            <a href="/services" class="block text-gray-600 hover:text-blue-600">Services</a>
+            <a href="/newsletter" class="block text-gray-600 hover:text-blue-600">Newsletter</a>
+            <a href="/about" class="block text-gray-600 hover:text-blue-600">About</a>
+            <a href="/contact" class="block bg-blue-600 text-white px-4 py-2 rounded text-center hover:bg-blue-700">
+              Contact
+            </a>
+          </nav>
+        </div>
+      </div>
+    </div>
   </div>
+
 </header>
+

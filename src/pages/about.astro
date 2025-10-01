@@ -3,33 +3,44 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 ---
 <BaseLayout title="About — Flutter Specialists" description="Meet Zayin Krige, South African Flutter expert and founder of Apex Technology, specializing in enterprise Flutter development and consulting.">
   <section class="container py-16">
-    <h1 class="text-3xl font-bold">About Zayin Krige</h1>
+    <div class="mb-6">
+      <span class="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">Flutter Architect & Consultant</span>
+    </div>
 
-    <div class="mt-6 grid md:grid-cols-2 gap-8">
-      <div>
-        <h2 class="text-xl font-semibold mb-3">Flutter Specialist</h2>
-        <p class="text-gray-700 mb-4">
-          I'm Zayin Krige, a passionate software developer with extensive experience
-          in mobile and web development. I specialize in building robust, scalable Flutter applications for
-          enterprise clients worldwide.
+    <h1 class="text-3xl font-bold">Helping Teams Build Better Flutter Apps</h1>
+
+    <div class="mt-6 grid md:grid-cols-3 gap-8">
+      <div class="md:col-span-2">
+        <p class="text-lg text-gray-700 mb-4">
+          I'm Zayin Krige, a Flutter specialist dedicated to helping development teams create exceptional mobile applications.
+          With years of experience in enterprise mobile development, I focus on the intersection of solid architecture,
+          performance optimization, and developer productivity.
         </p>
         <p class="text-gray-700 mb-4">
-          As the founder of <a href="https://apextechnology.co.za" class="text-blue-600 hover:underline" target="_blank">Apex Technology</a>,
-          I've had the privilege of working with international businesses to solve complex technical challenges,
-          from identity verification systems to enterprise mobile applications.
+          As the founder of <a href="https://apextechnology.co.za" class="text-blue-600 hover:underline font-medium" target="_blank">Apex Technology</a>,
+          I've worked with organizations worldwide to tackle complex mobile development challenges, from high-performance
+          applications to scalable architecture design.
+        </p>
+        <p class="text-gray-700 mb-6">
+          This site serves as a resource for Flutter developers and teams, sharing insights from real-world projects,
+          best practices, and lessons learned in enterprise mobile development.
         </p>
       </div>
 
-      <div>
-        <h2 class="text-xl font-semibold mb-3">Expertise & Approach</h2>
-        <p class="text-gray-700 mb-4">
-          My approach to Flutter development is shaped by real-world experience in demanding environments.
-          I focus on pragmatic solutions that balance technical excellence with business needs.
-        </p>
-        <p class="text-gray-700 mb-4">
-          This site shares insights from my journey as a Flutter developer and consultant, offering practical
-          guidance for teams looking to build better mobile applications.
-        </p>
+      <div class="bg-gray-50 p-6 rounded-lg">
+        <h3 class="font-semibold mb-3">What I Offer</h3>
+        <ul class="text-sm text-gray-700 space-y-2">
+          <li>• Enterprise Flutter Architecture</li>
+          <li>• Performance Optimization</li>
+          <li>• Code Review & Mentoring</li>
+          <li>• Training & Workshops</li>
+          <li>• Technical Consulting</li>
+        </ul>
+        <div class="mt-4">
+          <a href="/contact" class="text-sm bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 inline-block">
+            Discuss Your Project →
+          </a>
+        </div>
       </div>
     </div>
 
