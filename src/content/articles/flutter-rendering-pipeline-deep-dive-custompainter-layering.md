@@ -1,6 +1,6 @@
 ---
 title: "Flutter Rendering Pipeline Deep Dive: Layering, Compositing, and CustomPainter"
-description: An in-depth exploration of Flutter’s rendering pipeline—widgets, elements, render objects, layers—and how to build high-performance custom rendering with CustomPainter.
+description: Deep dive into Flutter's rendering pipeline covering widgets, elements, render objects, layers, and high-performance custom rendering with CustomPainter.
 date: 2025-03-26
 tags:
   [

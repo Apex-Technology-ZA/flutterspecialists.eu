@@ -1,6 +1,6 @@
 ---
 title: Accessibility and Internationalization at Scale in Flutter
-description: A comprehensive guide to building accessible, localized Flutter apps at enterprise scale, from semantics and focus management to RTL, pluralization, and continuous localization.
+description: Guide to building accessible, localized Flutter apps at scale. Covers semantics, focus management, RTL, pluralization, and continuous localization.
 date: 2025-03-24
 tags: ["accessibility", "a11y", "internationalization", "i18n", "l10n", "flutter", "rtl"]
 heroImage: "/og-default.svg"

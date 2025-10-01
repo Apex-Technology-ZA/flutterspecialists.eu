@@ -1,6 +1,6 @@
 ---
 title: "Robust Networking in Flutter: Errors, Retries, Cancellation, and Backpressure"
-description: A deep guide to building resilient, observable, and user-friendly networking layers in Flutter, covering error taxonomies, retry strategies, timeouts, cancellation, deduplication, and backpressure.
+description: Guide to building resilient Flutter networking layers with error handling, retries, timeouts, cancellation, deduplication, and backpressure.
 date: 2025-03-22
 tags:
   ["networking", "resilience", "retries", "timeouts", "flutter", "architecture"]
