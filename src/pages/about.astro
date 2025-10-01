@@ -1,15 +1,54 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
 ---
-<BaseLayout title="About — Flutter Specialists" description="Our mission is to help teams ship excellent Flutter apps.">
+<BaseLayout title="About — Flutter Specialists" description="Meet Zayin Krige, South African Flutter expert and founder of Apex Technology, specializing in enterprise Flutter development and consulting.">
   <section class="container py-16">
-    <h1 class="text-3xl font-bold">About</h1>
-    <p class="mt-3 text-gray-700 max-w-3xl">
-      We help engineering teams deliver robust Flutter apps faster. Our approach is pragmatic and experience-driven:
-      clear architecture, strong testing discipline, performance excellence, and developer productivity.
-    </p>
-    <p class="mt-3 text-gray-700 max-w-3xl">
-      This site shares our insights via articles and training materials, and provides details on our consulting services.
-    </p>
+    <h1 class="text-3xl font-bold">About Zayin Krige</h1>
+
+    <div class="mt-6 grid md:grid-cols-2 gap-8">
+      <div>
+        <h2 class="text-xl font-semibold mb-3">South African Flutter Specialist</h2>
+        <p class="text-gray-700 mb-4">
+          I'm Zayin Krige, a passionate software developer based in South Africa with over a decade of experience
+          in mobile and web development. I specialize in building robust, scalable Flutter applications for
+          enterprise clients.
+        </p>
+        <p class="text-gray-700 mb-4">
+          As the founder of <a href="https://apextechnology.co.za" class="text-blue-600 hover:underline" target="_blank">Apex Technology</a>,
+          I've had the privilege of working with South African businesses to solve complex technical challenges,
+          from identity verification systems to enterprise mobile applications.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-xl font-semibold mb-3">Expertise & Approach</h2>
+        <p class="text-gray-700 mb-4">
+          My approach to Flutter development is shaped by real-world experience in demanding environments.
+          I focus on pragmatic solutions that balance technical excellence with business needs.
+        </p>
+        <p class="text-gray-700 mb-4">
+          This site shares insights from my journey as a Flutter developer and consultant, offering practical
+          guidance for teams looking to build better mobile applications.
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-8 p-6 bg-gray-50 rounded-lg">
+      <h3 class="text-lg font-semibold mb-3">Get in Touch</h3>
+      <p class="text-gray-700 mb-3">
+        Want to discuss your Flutter project or need consulting services?
+      </p>
+      <div class="flex flex-wrap gap-4">
+        <a href="mailto:info@zayinkrige.com" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          Email Me
+        </a>
+        <a href="https://zayinkrige.com" class="border border-gray-300 px-4 py-2 rounded hover:bg-gray-50" target="_blank">
+          Personal Site
+        </a>
+        <a href="https://apextechnology.co.za" class="border border-gray-300 px-4 py-2 rounded hover:bg-gray-50" target="_blank">
+          Apex Technology
+        </a>
+      </div>
+    </div>
   </section>
 </BaseLayout>

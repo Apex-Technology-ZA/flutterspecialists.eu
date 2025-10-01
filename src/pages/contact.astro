@@ -1,32 +1,59 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
 ---
-<BaseLayout title="Contact — Flutter Specialists" description="Get in touch to discuss consulting or training.">
+<BaseLayout title="Contact Zayin Krige — Flutter Consultant" description="Get in touch with South African Flutter specialist Zayin Krige for consulting, training, and development services.">
   <section class="container py-16">
-    <h1 class="text-3xl font-bold">Contact</h1>
+    <div class="mb-6">
+      <span class="inline-block bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium">South Africa Based • Global Service</span>
+    </div>
+
+    <h1 class="text-3xl font-bold">Get in Touch</h1>
     <p class="mt-3 text-gray-700 max-w-2xl">
-      Email us with a brief description of your team, codebase, and current challenges. We typically respond within 2 business days.
+      Ready to discuss your Flutter project? I'm based in South Africa (GMT+2) and work with clients globally.
+      Send me an email with details about your team, challenges, and timeline.
     </p>
 
-    <div class="mt-8 grid gap-6 md:grid-cols-2">
+    <div class="mt-8 grid gap-6 md:grid-cols-3">
       <div class="rounded border p-6">
-        <h2 class="font-semibold">Project inquiries</h2>
+        <h2 class="font-semibold">📧 Direct Contact</h2>
         <p class="mt-2 text-sm text-gray-600">
-          For consulting, training, or architecture reviews, include your target timelines and any constraints.
+          For Flutter consulting, training, or development services
         </p>
         <p class="mt-3">
-          <a class="text-primary hover:underline" href="mailto:hello@flutterspecialists.eu">hello@flutterspecialists.eu</a>
+          <a class="text-primary hover:underline font-medium" href="mailto:info@zayinkrige.com">info@zayinkrige.com</a>
         </p>
       </div>
 
       <div class="rounded border p-6">
-        <h2 class="font-semibold">Follow our work</h2>
+        <h2 class="font-semibold">🏢 Apex Technology</h2>
+        <p class="mt-2 text-sm text-gray-600">
+          Enterprise solutions and identity verification services
+        </p>
+        <p class="mt-3">
+          <a class="text-primary hover:underline font-medium" href="https://apextechnology.co.za" target="_blank" rel="noopener">
+            Visit Apex Technology →
+          </a>
+        </p>
+      </div>
+
+      <div class="rounded border p-6">
+        <h2 class="font-semibold">📚 Resources</h2>
         <ul class="mt-2 text-sm text-gray-600 space-y-1">
-          <li><a class="text-primary hover:underline" href="/articles/">Articles</a></li>
+          <li><a class="text-primary hover:underline" href="/articles/">Technical Articles</a></li>
           <li><a class="text-primary hover:underline" href="/newsletter">Newsletter</a></li>
-          <li><a class="text-primary hover:underline" href="/rss.xml">RSS feed</a></li>
+          <li><a class="text-primary hover:underline" href="/services">Services</a></li>
         </ul>
       </div>
+    </div>
+
+    <div class="mt-8 p-6 bg-gray-50 rounded-lg">
+      <h3 class="font-semibold mb-2">What to include in your message:</h3>
+      <ul class="text-sm text-gray-700 space-y-1">
+        <li>• Your company and role</li>
+        <li>• Current Flutter challenges or project scope</li>
+        <li>• Team size and tech stack</li>
+        <li>• Target timeline and budget range</li>
+      </ul>
     </div>
   </section>
 </BaseLayout>

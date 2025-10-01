@@ -34,6 +34,27 @@ const headings = rendered ? rendered.headings : [];
       <h1 class="text-3xl font-bold">{entry.data.title}</h1>
       <div class="mt-2 text-xs text-gray-500">{new Date(entry.data.date).toLocaleDateString()}</div>
 
+      <!-- Author Bio Section -->
+      <div class="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold">
+            ZK
+          </div>
+          <div>
+            <p class="text-sm font-medium text-gray-900">Written by Zayin Krige</p>
+            <p class="text-xs text-gray-600">
+              South African Flutter developer and founder of
+              <a href="https://apextechnology.co.za" class="text-blue-600 hover:underline" target="_blank">Apex Technology</a>
+            </p>
+          </div>
+          <div class="ml-auto">
+            <a href="mailto:info@zayinkrige.com" class="text-xs bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700">
+              Get in Touch
+            </a>
+          </div>
+        </div>
+      </div>
+
       {Array.isArray(entry.data.tags) && entry.data.tags.length > 0 && (
         <div class="mt-3 flex flex-wrap gap-1">
           {entry.data.tags.map((t) => (
