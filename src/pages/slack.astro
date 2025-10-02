@@ -11,17 +11,32 @@ const invite = import.meta.env.PUBLIC_SLACK_INVITE_URL;
       Be respectful, keep it practical, and avoid spam or self-promotion.
     </p>
 
-    <div class="mt-8 rounded border p-6 bg-gray-50 max-w-xl">
+    <div class="mt-8">
       {invite ? (
-        <a
-          href={invite}
-          class="inline-flex items-center rounded bg-primary px-5 py-3 text-white hover:bg-secondary"
-          rel="noopener"
-        >
-          Join our Slack
-        </a>
+        <div class="relative overflow-hidden rounded-lg border-2 border-blue-200 bg-gradient-to-br from-blue-50 to-indigo-50 p-8 max-w-2xl">
+          <div class="flex flex-col md:flex-row items-start md:items-center gap-4">
+            <div class="shrink-0 rounded-lg bg-white/70 p-3 border border-blue-200">
+              <svg class="h-8 w-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h6m-6 4h8M5 20l2-2h10a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v12z"/>
+              </svg>
+            </div>
+            <div class="flex-1">
+              <h2 class="text-xl font-semibold text-gray-900">Join our Slack community</h2>
+              <p class="mt-1 text-sm text-gray-600">Get help, share architecture patterns, and meet other Flutter specialists.</p>
+            </div>
+            <div class="mt-2 md:mt-0">
+              <a
+                href={invite}
+                class="inline-flex items-center rounded bg-primary px-5 py-3 text-white hover:bg-secondary shadow-sm"
+                rel="noopener"
+              >
+                Join our Slack
+              </a>
+            </div>
+          </div>
+        </div>
       ) : (
-        <div>
+        <div class="rounded border p-6 bg-gray-50 max-w-xl">
           <p class="text-amber-700">
             Slack invite link not configured yet.
           </p>
